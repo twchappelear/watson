@@ -62,7 +62,7 @@ def post_list(request):
         keyObj = json.dumps(response, indent=2)
         post.obj3= json.loads(keyObj)
         post.keyUse = post.obj3['usage']['text_characters']
-        post.keyWord = post.obj3['keywords'][0]['text']
+        post.keyWord = post.obj3['keywords'][1]['text']
         post.keySent = post.obj3['keywords'][0]['sentiment']['label']
         post.keyRel = post.obj3['keywords'][0]['relevance']
         post.keySad = post.obj3['keywords'][0]['emotion']['sadness']
