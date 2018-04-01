@@ -6,6 +6,9 @@ from django.shortcuts import redirect
 import json
 from watson_developer_cloud import ToneAnalyzerV3
 from watson_developer_cloud import LanguageTranslatorV2 as LanguageTranslator
+from watson_developer_cloud import NaturalLanguageUnderstandingV1
+from watson_developer_cloud.natural_language_understanding_v1 \
+  import Features, KeywordsOptions
 
 
 # Create your views here.
@@ -20,6 +23,11 @@ def post_list(request):
     language_translator = LanguageTranslator(
         username='9af1bf91-8ed7-4e26-a3fb-fb07c74d556e',
         password='8cSAvBouuZD8')
+
+    natural_language_understanding = NaturalLanguageUnderstandingV1(
+        username='8ffadb58-95ba-4d61-8443-30a942bc9903',
+        password='NjmkNHyHdpFn',
+        version='2018-03-16')
 
     # print(json.dumps(translation, indent=2, ensure_ascii=False))
 
@@ -43,6 +51,26 @@ def post_list(request):
         post.trans = post.obj2['translations'][0]['translation']
         post.wordCount = post.obj2['word_count']
         post.characterCount = post.obj2['character_count']
+
+        response = natural_language_understanding.analyze(
+            text=post.text,
+            features=Features(
+                keywords=KeywordsOptions(
+                    sentiment=True,
+                    emotion=True,
+                    limit=2)))
+        keyObj = json.dumps(response, indent=2)
+        post.obj3= json.loads(keyObj)
+        post.keyUse = post.obj3['usage']['text_characters']
+        post.keyWord = post.obj3['keywords'][0]['text']
+        post.keySent = post.obj3['keywords'][0]['sentiment']['label']
+        post.keyRel = post.obj3['keywords'][0]['relevance']
+        post.keySad = post.obj3['keywords'][0]['emotion']['sadness']
+        post.keyJoy = post.obj3['keywords'][0]['emotion']['joy']
+        post.keyFear = post.obj3['keywords'][0]['emotion']['fear']
+        post.keyDisg = post.obj3['keywords'][0]['emotion']['disgust']
+        post.keyAng = post.obj3['keywords'][0]['emotion']['anger']
+
 
 
     return render(request, 'blog/post_list.html', {'posts': posts})

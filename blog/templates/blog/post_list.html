@@ -22,6 +22,16 @@
                Letter Count : {{post.characterCount}}
 
            </p>
+           
+           <p></p><span style="background-color: lightskyblue">Language Analysis</span>
+           <p>Keywords : {{post.keyWord}}</p>
+           <p>Sentiment : {{post.keySent}}</p>
+           <p>Relevane : {{post.keyRel}}</p>
+           <p>Sadness : {{post.keySad}}</p>
+           <p>Joy : {{ post.keyJoy}}</p>
+           <p>Fear : {{ post.keyFear}}</p>
+           <p>Disgust : {{ post.keyDisg}}</p>
+            <p>Anger : {{ post.keyAng}}</p>
 
        </div>
    {% endfor %}
